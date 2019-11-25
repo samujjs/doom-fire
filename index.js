@@ -49,21 +49,26 @@ const fireColorsPalette = [
 
 //fire souce
 for (let index = 0; index < canvas.width; index++) {
-    matrix[35][index] = 36
+    matrix[index][35] = 36
 }
 
+setInterval(function(){
 
-for (let column = 0; column < canvas.width; column++) {
-    for (let row = 0; row < canvas.height; row++) {
-        debugger
-        ctx.beginPath();
-        ctx.fillStyle = 'rgb(' + fireColorsPalette[matrix[row][column]] + ')';
-        ctx.rect(row, column, 1, 1);
-        ctx.fill();
-        ctx.closePath();
+    for (let row = 0; row < canvas.width; row++) {
+        for (let column = 0; column < canvas.height-1; column++) {
+            const intensity = matrix[row][column]
+            //debugger
+            ctx.beginPath()
+            ctx.fillStyle = 'rgb(' + fireColorsPalette[intensity] + ')'
+            ctx.rect(row, column, 1, 1)
+            ctx.fill()
+            ctx.closePath()
 
-        //atualizar a matrix
-        matrix[row][column] = matrix[row][column+1] - 1 < 0 ? 0 : matrix[row][column+1] - 1
-
-    }    
-}
+            //atualizar a matrix
+            const decay = Math.floor(Math.random() * 3)
+            const newIntensity = matrix[row][column+1] - decay < 0 ? 0 : matrix[row][column+1] - decay
+            matrix[row][column] = newIntensity
+            
+        }    
+    }
+}, 100)
